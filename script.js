@@ -97,8 +97,8 @@ const reels = [
     userprofile: "https://images.pexels.com/photos/19415827/pexels-photo-19415827.jpeg",
     shareCount: 78,
     isFollowed: true
-    },
-    {
+},
+{
     username: "daily.motivation",
     likeCount: 45200,
     isLiked: true,
@@ -108,47 +108,77 @@ const reels = [
     userprofile: "https://images.pexels.com/photos/30089247/pexels-photo-30089247.jpeg",
     shareCount: 900,
     isFollowed: true
-    }
+}
 ];
+const reelsSection = document.querySelector('.reels-section');
 
-window.onload = function() {
-    let reelsSection = document.querySelector('.reels-section');
+function renderData () {
+    reelsSection.innerHTML = "";
     reels.forEach(function (elem, idx) {
         let reelDiv = document.createElement('div');
         reelDiv.className = 'reel';
         reelDiv.innerHTML = `
-            <video src="${elem.video}" autoplay loop muted></video>
+            <video id=${idx} src="${elem.video}"  loop muted ></video>
             <div class="reel-info">
                 <div class="user-profile">
                     <img src="${elem.userprofile}" alt="${elem.username}">
                     <span>@${elem.username}</span>
-                    <button>${elem.isFollowed? 'Following' : 'Follow'}</button>
+                    <button class="follow-btn" id="${idx}" >${elem.isFollowed? 'Following' : 'Follow'}</button>
                 </div>
                 <p class="caption">${elem.caption}</p>
                 <div class="engagement">
-                    <div id=${idx} class="like-section">
-                    ${elem.isLiked? '<i class="liked ri-heart-fill"></i>': '<i class="like ri-heart-line"></i>'}
+                    <div id="${idx}" class="like-section">
+                    <i class="${elem.isLiked? 'liked ri-heart-fill' : 'like ri-heart-line'}"></i>
                         <span>${elem.likeCount}</span>
                     </div>
-                    <div class="comment-section">
-                        <i class="comment ri-chat-1-line"></i>
-                        <span>${elem.commentCount}</span>
-                    </div>
-                    <div class="share-section">
-                        <i class="share ri-send-plane-line"></i>
-                        <span>${elem.shareCount}</span>
-                    </div>
-                    <div class="more-section">
-                        <i class="more ri-more-2-line"></i>
-                    </div>
+                <div class="comment-section">
+                    <i class="comment ri-chat-1-line"></i>
+                    <span>${elem.commentCount}</span>
                 </div>
-            </div>
-        `;
+                <div class="share-section">
+                    <i class="share ri-send-plane-line"></i>
+                    <span>${elem.shareCount}</span>
+                </div>
+                <div class="more-section">
+                    <i class="more ri-more-2-line"></i>
+                </div>
+                </div>
+                </div>`;
         reelsSection.appendChild(reelDiv);
-    });
-};
+    })};
+renderData();
 
-let like = document.querySelectorAll('.like')
-let comment = document.querySelectorAll('.comment')
-let share = document.querySelectorAll('.share')
-let followBtn = document.querySelector('button');
+const allLikeBtns = document.querySelectorAll('.like-section');
+
+reelsSection.addEventListener('click', function(dets){
+    const followButton = dets.target.closest('button');
+    const likeButton = dets.target.closest('.like-section');
+
+    if(followButton && followButton.id){
+        const indexString = followButton.id;
+        const reelIndex = +indexString;
+        if(reels[reelIndex].isFollowed === false) {
+            reels[reelIndex].isFollowed = true;
+        }else{
+            reels[reelIndex].isFollowed = false;
+        }
+    }
+
+    if(likeButton){
+        const indexString = likeButton.id;
+        const reelIndex = +indexString;
+
+        if (reels[reelIndex].isLiked === false){
+            reels[reelIndex].likeCount++;
+            reels[reelIndex].isLiked = true;
+        }
+        else if(reels[reelIndex].isLiked === true){
+            reels[reelIndex].likeCount--;
+            reels[reelIndex].isLiked = false;
+        }
+    }
+    renderData();
+})
+
+
+
