@@ -54,7 +54,7 @@ const reels = [
     isLiked: true,
     commentCount: 440,
     caption: "UI tip: Reduce clutter, increase clarity.",
-    video: "https://filesamples.com/samples/video/mp4/sample_960x540.mp4",
+    video: "https://www.pexels.com/download/video/15162384.mp4",
     userprofile: "https://images.pexels.com/photos/27742317/pexels-photo-27742317.jpeg",
     shareCount: 275,
     isFollowed: true
