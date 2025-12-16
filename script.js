@@ -1,5 +1,6 @@
 const reels = [
     {
+    isMuted: true,
     username: "tech.with.aarav",
     likeCount: 12400,
     isLiked: false,
@@ -11,6 +12,7 @@ const reels = [
     isFollowed: false
     },
     {
+    isMuted: true,
     username: "codebysia",
     likeCount: 9850,
     isLiked: true,
@@ -22,6 +24,7 @@ const reels = [
     isFollowed: true
     },
     {
+    isMuted: true,
     username: "ranveer.fit",
     likeCount: 20400,
     isLiked: false,
@@ -33,6 +36,7 @@ const reels = [
     isFollowed: false
     },
     {
+    isMuted: true,
     username: "travelwithkaira",
     likeCount: 7620,
     isLiked: false,
@@ -44,6 +48,7 @@ const reels = [
     isFollowed: true
     },
     {
+    isMuted: true,
     username: "design.diaries",
     likeCount: 14200,
     isLiked: true,
@@ -55,6 +60,7 @@ const reels = [
     isFollowed: true
     },
     {
+    isMuted: true,
     username: "streetfoodguru",
     likeCount: 50100,
     isLiked: false,
@@ -66,6 +72,7 @@ const reels = [
     isFollowed: false
     },
     {
+    isMuted: true,
     username: "fitnessbymeera",
     likeCount: 8300,
     isLiked: false,
@@ -77,6 +84,7 @@ const reels = [
     isFollowed: true
     },
     {
+    isMuted: true,
     username: "coding.crush",
     likeCount: 19300,
     isLiked: true,
@@ -88,6 +96,7 @@ const reels = [
     isFollowed: false
     },
     {
+    isMuted: true,
     username: "minimalhomevibes",
     likeCount: 6100,
     isLiked: false,
@@ -97,9 +106,10 @@ const reels = [
     userprofile: "https://images.pexels.com/photos/19415827/pexels-photo-19415827.jpeg",
     shareCount: 78,
     isFollowed: true
-},
-{
-    username: "daily.motivation",
+    },
+    {
+    isMuted: true,
+    usename: "daily.motivation",
     likeCount: 45200,
     isLiked: true,
     commentCount: 1050,
@@ -108,7 +118,7 @@ const reels = [
     userprofile: "https://images.pexels.com/photos/30089247/pexels-photo-30089247.jpeg",
     shareCount: 900,
     isFollowed: true
-}
+    }
 ];
 const reelsSection = document.querySelector('.reels-section');
 
@@ -118,7 +128,8 @@ function renderData () {
         let reelDiv = document.createElement('div');
         reelDiv.className = 'reel';
         reelDiv.innerHTML = `
-            <video id=${idx} src="${elem.video}"  loop muted ></video>
+            <video src="${elem.video}"  loop autoplay ${elem.isMuted? 'muted' : ' '}></video>
+            
             <div class="reel-info">
                 <div class="user-profile">
                     <img src="${elem.userprofile}" alt="${elem.username}">
@@ -126,6 +137,7 @@ function renderData () {
                     <button class="follow-btn" id="${idx}" >${elem.isFollowed? 'Following' : 'Follow'}</button>
                 </div>
                 <p class="caption">${elem.caption}</p>
+                
                 <div class="engagement">
                     <div id="${idx}" class="like-section">
                     <i class="${elem.isLiked? 'liked ri-heart-fill' : 'like ri-heart-line'}"></i>
@@ -143,7 +155,10 @@ function renderData () {
                     <i class="more ri-more-2-line"></i>
                 </div>
                 </div>
-                </div>`;
+                </div>
+                <div class="mute" id="${idx}">
+                    <i class="${elem.isMuted? 'ri-volume-mute-fill' : 'ri-volume-up-fill'}"></i>
+                </div`;
         reelsSection.appendChild(reelDiv);
     })};
 renderData();
@@ -153,6 +168,7 @@ const allLikeBtns = document.querySelectorAll('.like-section');
 reelsSection.addEventListener('click', function(dets){
     const followButton = dets.target.closest('button');
     const likeButton = dets.target.closest('.like-section');
+    const muteButton = dets.target.closest('.mute');
 
     if(followButton && followButton.id){
         const indexString = followButton.id;
@@ -162,6 +178,7 @@ reelsSection.addEventListener('click', function(dets){
         }else{
             reels[reelIndex].isFollowed = false;
         }
+        renderData();
     }
 
     if(likeButton){
@@ -176,9 +193,19 @@ reelsSection.addEventListener('click', function(dets){
             reels[reelIndex].likeCount--;
             reels[reelIndex].isLiked = false;
         }
+        renderData();
     }
-    renderData();
+
+    if(muteButton){
+        const indexString = muteButton.id;
+        const reelIndex = +indexString;
+
+        if(reels[reelIndex].isMuted === true){
+            reels[reelIndex].isMuted = false;
+        }
+        else if(reels[reelIndex].isMuted === false){
+            reels[reelIndex].isMuted = true;
+        }
+        renderData();
+    }
 })
-
-
-
